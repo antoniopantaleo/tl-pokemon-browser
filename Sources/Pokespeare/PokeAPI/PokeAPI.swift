@@ -10,8 +10,8 @@ import Foundation
 enum PokeAPI {
     case pokemon(name: String)
     
-    var url: URL? {
-        guard let base = URL(string: "https://pokeapi.co/api/v2/") else { return nil }
+    var url: URL {
+        let base = URL(staticString: "https://pokeapi.co/api/v2/")
         return switch self {
             case let .pokemon(name):
                 base.appending(components: "pokemon", name)
