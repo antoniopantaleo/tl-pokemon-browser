@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "DA435081-0464-4619-8943-DA3B1E16F75E",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "Pokespeare",
+          "name" : "Pokespeare"
+        }
+      ]
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "PokespeareTests",
+        "name" : "PokespeareTests"
+      }
+    }
+  ],
+  "version" : 1
+}
