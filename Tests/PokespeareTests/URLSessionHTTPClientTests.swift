@@ -9,7 +9,7 @@ import Foundation
 import Testing
 import Pokespeare
 
-@Suite("URLSessionHTTPClientTests")
+@Suite("URLSessionHTTPClientTests", .serialized)
 final class URLSessionHTTPClientTests {
     
     private let sut: URLSessionHTTPClient
@@ -42,7 +42,25 @@ final class URLSessionHTTPClientTests {
         _ = try await sut.perform(request: request)
         // Then
         #expect(URLProtocolStub.performedRequests == [request])
-        
+    }
+    
+    @Test("perform throws error if response is not HTTPURLResponse")
+    func notHTTPResponse() async throws {
+        // Given
+        let request = URLRequest(url: anyURL)
+        URLProtocolStub.stub {
+            anyData
+            URLResponse(
+                url: anyURL,
+                mimeType: nil,
+                expectedContentLength: 200,
+                textEncodingName: nil
+            )
+        }
+        // Then
+        await #expect(throws: URLError(.badServerResponse)) {
+            _ = try await self.sut.perform(request: request)
+        }
     }
 }
 
