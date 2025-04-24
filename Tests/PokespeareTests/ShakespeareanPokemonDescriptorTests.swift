@@ -16,36 +16,28 @@ struct ShakespeareanPokemonDescriptorTests {
         @Test("getDescription returns a Shakespearean description")
         func getsDescription() async throws {
             // Given
-            let client = HTTPClientStub(
-                stubs: [
-                    .success(
-                        .success200(
-                            data: try makePokemonDetailResponseData(
-                                id: 1,
-                                name: "pikachu",
-                                spriteURL: anyURL
-                            )
-                        )
-                    ),
-                    
-                    .success(
-                        .success200(
-                            data: try makePokemonSpeciesResponseData(
-                                description: "A description",
-                                language: "en"
-                            )
-                        )
-                    ),
-                    
-                    .success(
-                        .success200(
-                            data: try makeRemoteTranslationResponseData(
-                                description: "A shakesperian description"
-                            )
-                        )
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: anyURL
                     )
-                ]
-            )
+                }
+                
+                Success {
+                    try makePokemonSpeciesResponseData(
+                       description: "A description",
+                       language: "en"
+                   )
+                }
+                
+                Success {
+                    try makeRemoteTranslationResponseData(
+                        description: "A shakesperian description"
+                    )
+                }
+            }
             let sut = ShakespeareanPokemonDescriptor(client: client)
             // When
             let description = try await sut.getDescription(pokemonName: "pikachu")

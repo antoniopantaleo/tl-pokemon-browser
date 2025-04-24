@@ -17,22 +17,16 @@ struct RemotePokemonSpriteLoaderTests {
         @Test("getSprite calls correct Pokemon detail endpoint")
         func correctEndpoint() async throws {
             // Given
-            let client = HTTPClientStub(
-                stubs:
-                    [
-                        .success(
-                            .success200(
-                                data:
-                                    try makePokemonDetailResponseData(
-                                        id: 1,
-                                        name: "pikachu",
-                                        spriteURL: anyURL
-                                    )
-                            )
-                        ),
-                        .success(.success200(data: anyData))
-                    ]
-            )
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: anyURL
+                    )
+                }
+                Success { anyData }
+            }
             let sut = RemotePokemonSpriteLoader(client: client)
             // When
             _ = try await sut.getSprite(pokemonName: "pikachu")
@@ -46,22 +40,16 @@ struct RemotePokemonSpriteLoaderTests {
         func twoApiCalls() async throws {
             // Given
             let spriteURL = URL(string: "https://sprite-url.com")!
-            let client = HTTPClientStub(
-                stubs:
-                    [
-                        .success(
-                            .success200(
-                                data:
-                                    try makePokemonDetailResponseData(
-                                        id: 1,
-                                        name: "pikachu",
-                                        spriteURL: spriteURL
-                                    )
-                            )
-                        ),
-                        .success(.success200(data: anyData))
-                    ]
-            )
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: spriteURL
+                    )
+                }
+                Success { anyData }
+            }
             let sut = RemotePokemonSpriteLoader(client: client)
             // When
             _ = try await sut.getSprite(pokemonName: "pikachu")
@@ -83,9 +71,9 @@ struct RemotePokemonSpriteLoaderTests {
         @Test("getSprite throws error if Pokemon detail can't be decoded from succesful response")
         func decodingError() async throws {
             // Given
-            let client = HTTPClientStub(
-                stubs: [ .success(.success200(data: anyData)) ]
-            )
+            let client = HTTPClientStub {
+                Success { anyData }
+            }
             let sut = RemotePokemonSpriteLoader(client: client)
             // Then
             await #expect(
@@ -101,7 +89,9 @@ struct RemotePokemonSpriteLoaderTests {
         func failingHTTP() async throws {
             // Given
             let error = NSError(domain: "client", code: -1)
-            let client = HTTPClientStub(stubs: [.failure(error)])
+            let client = HTTPClientStub {
+                Failure(error: error)
+            }
             let sut = RemotePokemonSpriteLoader(client: client)
             // Then
             await #expect(
@@ -117,21 +107,16 @@ struct RemotePokemonSpriteLoaderTests {
         func spriteAPIFails() async throws {
             // Given
             let error = NSError(domain: "client", code: -1)
-            let client = HTTPClientStub(
-                stubs: [
-                    .success(
-                        .success200(
-                            data:
-                                try makePokemonDetailResponseData(
-                                    id: 1,
-                                    name: "pikachu",
-                                    spriteURL: anyURL
-                                )
-                        )
-                    ),
-                    .failure(error)
-                ]
-            )
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: anyURL
+                    )
+                }
+                Failure(error: error)
+            }
             let sut = RemotePokemonSpriteLoader(client: client)
             // Then
             await #expect(
@@ -146,20 +131,15 @@ struct RemotePokemonSpriteLoaderTests {
         @Test("retrieveSprite returns empty data if Pokemon does not have image URL")
         func noImageURL() async throws {
             // Given
-            let client = HTTPClientStub(
-                stubs: [
-                    .success(
-                        .success200(
-                            data:
-                                try makePokemonDetailResponseData(
-                                    id: 1,
-                                    name: "pikachu",
-                                    spriteURL: nil
-                                )
-                        )
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: nil
                     )
-                ]
-            )
+                }
+            }
             let sut = RemotePokemonSpriteLoader(client: client)
             // When
             let spriteData = try await sut.getSprite(pokemonName: "pikachu")
@@ -194,11 +174,9 @@ struct RemotePokemonSpriteLoaderTests {
         )
         func pokemonDetailNon200StatusCode(statusCode: Int, data: Data) async throws {
             // Given
-            let client = HTTPClientStub(
-                stubs: [
-                    .success(Response(statusCode: statusCode, data: data))
-                ]
-            )
+            let client = HTTPClientStub {
+                Success(statusCode: statusCode) { data }
+            }
             let sut = RemotePokemonSpriteLoader(client: client)
             // Then
             await #expect(throws: URLError(.badServerResponse)) {
@@ -218,20 +196,16 @@ struct RemotePokemonSpriteLoaderTests {
         )
         func spriteNon200StatusCode(statusCode: Int, data: Data) async throws {
             // Given
-            let client = HTTPClientStub(
-                stubs: [
-                    .success(
-                        .success200(
-                            data: try makePokemonDetailResponseData(
-                                id: 1,
-                                name: "pikachu",
-                                spriteURL: anyURL
-                            )
-                        )
-                    ),
-                    .success(Response(statusCode: statusCode, data: data))
-                ]
-            )
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: anyURL
+                    )
+                }
+                Success(statusCode: statusCode)  { data }
+            }
             let sut = RemotePokemonSpriteLoader(client: client)
             // Then
             await #expect(throws: URLError(.badServerResponse)) {
