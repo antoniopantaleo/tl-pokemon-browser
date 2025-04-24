@@ -38,6 +38,38 @@ struct RemotePokemonSpriteLoaderTests {
                 client.performedRequests.first?.url?.absoluteString == "https://pokeapi.co/api/v2/pokemon/pikachu"
             )
         }
+        
+        @Test("getSprite performs 2 api calls")
+        func twoApiCalls() async throws {
+            // Given
+            let spriteURL = URL(string: "https://sprite-url.com")!
+            let client = HTTPClientStub(
+                stubs:
+                    [
+                        .success(
+                            try makePokemonDetailResponseData(
+                                id: 1,
+                                name: "pikachu",
+                                spriteURL: spriteURL
+                            )
+                        ),
+                        .success(anyData)
+                    ]
+            )
+            let sut = RemotePokemonSpriteLoader(client: client)
+            // When
+            _ = try await sut.getSprite(pokemonName: "pikachu")
+            // Then
+            #expect(
+                client.performedRequests
+                    .compactMap(\.url)
+                    .map(\.absoluteString)
+                == [
+                    "https://pokeapi.co/api/v2/pokemon/pikachu",
+                    "https://sprite-url.com"
+                ]
+            )
+        }
     }
     
     struct ErrorPath {
