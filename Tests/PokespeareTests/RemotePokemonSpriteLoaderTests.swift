@@ -133,6 +133,27 @@ struct RemotePokemonSpriteLoaderTests {
                 }
             )
         }
+        
+        @Test("retrieveSprite returns empty data if Pokemon does not have image URL")
+        func noImageURL() async throws {
+            // Given
+            let client = HTTPClientStub(
+                stubs: [
+                    .success(
+                        try makePokemonDetailResponseData(
+                            id: 1,
+                            name: "pikachu",
+                            spriteURL: nil
+                        )
+                    )
+                ]
+            )
+            let sut = RemotePokemonSpriteLoader(client: client)
+            // When
+            let spriteData = try await sut.getSprite(pokemonName: "pikachu")
+            // Then
+            #expect(spriteData.isEmpty)
+        }
     }
 }
 
@@ -143,7 +164,8 @@ private func makePokemonDetailResponseData(
 ) throws -> Data {
     var dict: [String: Any] = [
         "id": id,
-        "name": name
+        "name": name,
+        "sprites": [:]
     ]
     if let spriteURL {
         dict["sprites"] = ["front_default": spriteURL.absoluteString]
