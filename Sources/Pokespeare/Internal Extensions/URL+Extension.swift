@@ -20,4 +20,12 @@ extension URL {
         }
         self = url
     }
+    
+    func appending(queryItems: (name: String, value: String?)...) -> URL {
+        appending(
+            queryItems: queryItems.map { item in
+                URLQueryItem.init(name: item.name, value: item.value)
+            }
+        )
+    }
 }
