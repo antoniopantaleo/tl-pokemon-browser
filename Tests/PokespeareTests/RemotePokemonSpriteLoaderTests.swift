@@ -106,6 +106,33 @@ struct RemotePokemonSpriteLoaderTests {
                 }
             )
         }
+        
+        @Test("getSprite throws error if sprite API request fails")
+        func spriteAPIFails() async throws {
+            // Given
+            let error = NSError(domain: "client", code: -1)
+            let client = HTTPClientStub(
+                stubs: [
+                    .success(
+                        try makePokemonDetailResponseData(
+                            id: 1,
+                            name: "pikachu",
+                            spriteURL: anyURL
+                        )
+                    ),
+                    .failure(error)
+                ]
+            )
+            let sut = RemotePokemonSpriteLoader(client: client)
+            // Then
+            await #expect(
+                throws: error,
+                performing: {
+                    // When
+                    _ = try await sut.getSprite(pokemonName: "pikachu")
+                }
+            )
+        }
     }
 }
 
