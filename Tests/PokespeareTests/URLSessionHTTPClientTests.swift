@@ -62,5 +62,19 @@ final class URLSessionHTTPClientTests {
             _ = try await self.sut.perform(request: request)
         }
     }
+    
+    @Test("URLSessionHTTPClient does not alter received data")
+    func sameData() async throws {
+        // Given
+        let data = Data("hello world".utf8)
+        URLProtocolStub.stub {
+            data
+            HTTPURLResponse(statusCode: 201)
+        }
+        // When
+        let response = try await sut.perform(request: URLRequest(url: anyURL))
+        // Then
+        #expect(response.data == data)
+    }
 }
 
