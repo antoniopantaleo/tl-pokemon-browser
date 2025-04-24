@@ -12,7 +12,12 @@ struct RemotePokemonDetail: Decodable {
         let front_default: URL?
     }
     
+    struct Species: Decodable {
+        let url: URL
+    }
+    
     let id: Int
     let name: String
+    let species: Species
     let sprites: Sprites
 }

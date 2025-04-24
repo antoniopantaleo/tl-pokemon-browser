@@ -13,11 +13,13 @@ var anyData: Data { Data("any-data".utf8) }
 func makePokemonDetailResponseData(
     id: Int,
     name: String,
+    speciesURL: URL = anyURL,
     spriteURL: URL?
 ) throws -> Data {
     var dict: [String: Any] = [
         "id": id,
         "name": name,
+        "species": ["url" : speciesURL.absoluteString],
         "sprites": [:]
     ]
     if let spriteURL {
