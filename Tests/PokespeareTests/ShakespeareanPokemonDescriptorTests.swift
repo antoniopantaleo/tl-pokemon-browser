@@ -123,6 +123,31 @@ struct ShakespeareanPokemonDescriptorTests {
                 }
             )
         }
+        
+        @Test("getDescription throws error if Pokemon Species HTTP request fails")
+        func failingSpeciesHTTP() async throws {
+            // Given
+            let error = NSError(domain: "client", code: -1)
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: anyURL
+                    )
+                }
+                Failure(error: error)
+            }
+            let sut = ShakespeareanPokemonDescriptor(client: client)
+            // Then
+            await #expect(
+                throws: error,
+                performing: {
+                    // When
+                    _ = try await sut.getDescription(pokemonName: "pikachu")
+                }
+            )
+        }
     }
 }
 
