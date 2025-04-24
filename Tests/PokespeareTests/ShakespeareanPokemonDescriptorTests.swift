@@ -323,6 +323,45 @@ struct ShakespeareanPokemonDescriptorTests {
             }
         }
         
+        @Test("Newline character gets removed from description")
+        func newLineCharacter() async throws {
+            // Given
+            let string = "It can go for days\nwithout eating a\nsingle morsel. In the bulb on\nits back, it\nstores energy."
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: anyURL
+                    )
+                }
+                
+                Success {
+                    try makePokemonSpeciesResponseData(description: string)
+                }
+                
+                Success {
+                    try makeRemoteTranslationResponseData(description: "a description")
+                }
+            }
+            let sut = ShakespeareanPokemonDescriptor(client: client)
+            // When
+            _ = try await sut.getDescription(pokemonName: "pikachu")
+            // Then
+            let translationRequestURL = try #require(
+                client.performedRequests.last?.url
+            )
+            let components = URLComponents(
+                url: translationRequestURL,
+                resolvingAgainstBaseURL: false
+            )
+            let textQueryItemValue = components?.queryItems?
+                .first(where: { $0.name == "text"})?.value
+            #expect(
+                textQueryItemValue == "It can go for days without eating a single morsel. In the bulb on its back, it stores energy."
+            )
+        }
+        
     }
 }
 
