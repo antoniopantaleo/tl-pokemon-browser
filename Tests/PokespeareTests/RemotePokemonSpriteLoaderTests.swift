@@ -192,10 +192,43 @@ struct RemotePokemonSpriteLoaderTests {
                 )
             ]
         )
-        func non200StatusCode(statusCode: Int, data: Data) async throws {
+        func pokemonDetailNon200StatusCode(statusCode: Int, data: Data) async throws {
             // Given
             let client = HTTPClientStub(
                 stubs: [
+                    .success(Response(statusCode: statusCode, data: data))
+                ]
+            )
+            let sut = RemotePokemonSpriteLoader(client: client)
+            // Then
+            await #expect(throws: URLError(.badServerResponse)) {
+                // When
+                _ = try await sut.getSprite(pokemonName: "pikachu")
+            }
+        }
+        
+        @Test(
+            "getSprite throws error if sprite API returns with non 200 status code",
+            arguments: [
+                (500, anyData),
+                (404, anyData),
+                (500, Data()),
+                (404, Data())
+            ]
+        )
+        func spriteNon200StatusCode(statusCode: Int, data: Data) async throws {
+            // Given
+            let client = HTTPClientStub(
+                stubs: [
+                    .success(
+                        .success200(
+                            data: try makePokemonDetailResponseData(
+                                id: 1,
+                                name: "pikachu",
+                                spriteURL: anyURL
+                            )
+                        )
+                    ),
                     .success(Response(statusCode: statusCode, data: data))
                 ]
             )
