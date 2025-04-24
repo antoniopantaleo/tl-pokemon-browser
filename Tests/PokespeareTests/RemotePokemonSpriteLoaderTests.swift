@@ -36,6 +36,25 @@ struct RemotePokemonSpriteLoaderTests {
             client.performedRequests.first?.url?.absoluteString == "https://pokeapi.co/api/v2/pokemon/pikachu"
         )
     }
+    
+    @Test("getSprite throws error if Pokemon detail can't be decoded from succesful response")
+    func decodingError() async throws {
+        // Given
+        let client = HTTPClientStub(
+            stubs: [ .success(anyData) ]
+        )
+        let sut = RemotePokemonSpriteLoader(client: client)
+        // Then
+        await #expect(
+            throws: DecodingError.self,
+            performing: {
+                // When
+                _ = try await sut.getSprite(pokemonName: "pikachu")
+            }
+        )
+    }
+    
+    //MARK: - Helpers
 
     private var anyURL: URL { URL(string: "https://example.com")! }
     private var anyData: Data { Data("any-data".utf8) }
