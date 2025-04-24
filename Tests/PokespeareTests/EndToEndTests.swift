@@ -28,7 +28,7 @@ struct EndToEndTests {
         #expect(!spriteData.isEmpty)
     }
     
-    @Test("PokemonDescriptor")
+    @Test("ShakespeareanPokemonDescriptor")
     func pokemonDescriptor() async throws {
         // Given
         let configuration = URLSessionConfiguration.ephemeral
