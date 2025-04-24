@@ -7,7 +7,7 @@
 
 import Foundation
 import Testing
-import Pokespeare
+@testable import Pokespeare
 
 @Suite("ShakespeareanPokemonDescriptorTests")
 struct ShakespeareanPokemonDescriptorTests {
@@ -171,6 +171,36 @@ struct ShakespeareanPokemonDescriptorTests {
             // Then
             await #expect(
                 throws: error,
+                performing: {
+                    // When
+                    _ = try await sut.getDescription(pokemonName: "pikachu")
+                }
+            )
+        }
+        
+        @Test("getDescription throws error if FunTranslation does not have english description")
+        func noEnglishDescription() async throws {
+            // Given
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        speciesURL: anyURL,
+                        spriteURL: anyURL
+                    )
+                }
+                Success {
+                    try makePokemonSpeciesResponseData(
+                        description: "a description",
+                        language: "it"
+                    )
+                }
+            }
+            let sut = ShakespeareanPokemonDescriptor(client: client)
+            // Then
+            await #expect(
+                throws: NoEnglishDescriptionError(),
                 performing: {
                     // When
                     _ = try await sut.getDescription(pokemonName: "pikachu")

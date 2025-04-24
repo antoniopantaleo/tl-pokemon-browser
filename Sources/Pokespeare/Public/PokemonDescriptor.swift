@@ -11,6 +11,8 @@ public protocol PokemonDescriptor {
     func getDescription(pokemonName name: String) async throws -> String
 }
 
+public struct NoEnglishDescriptionError: Error, Equatable {}
+
 public struct ShakespeareanPokemonDescriptor: PokemonDescriptor {
     
     private let client: HTTPClient
@@ -38,7 +40,7 @@ public struct ShakespeareanPokemonDescriptor: PokemonDescriptor {
             .replacingOccurrences(of: "\n", with: " ")
             .replacingOccurrences(of: "\u{000C}", with: " ")
         else {
-            throw URLError(.unknown)
+            throw NoEnglishDescriptionError()
         }
         let translationRequest = URLRequest(url: FunTranslationsAPI.shakespeare(
             text: description).url
