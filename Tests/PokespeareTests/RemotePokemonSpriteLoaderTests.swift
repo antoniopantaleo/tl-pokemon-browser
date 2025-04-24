@@ -14,7 +14,7 @@ struct RemotePokemonSpriteLoaderTests {
     
     struct HappyPath {
 
-        @Test("getSprite calls correct endpoint")
+        @Test("getSprite calls correct Pokemon detail endpoint")
         func correctEndpoint() async throws {
             // Given
             let client = HTTPClientStub(
