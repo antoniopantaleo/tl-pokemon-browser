@@ -11,4 +11,5 @@ extension Tag {
     @Tag static var `internal`: Self
     @Tag static var `public`: Self
     @Tag static var api: Self
+    @Tag static var endToEnd: Self
 }

@@ -21,6 +21,13 @@
   },
   "testTargets" : [
     {
+      "skippedTests" : {
+        "suites" : [
+          {
+            "name" : "EndToEndTests"
+          }
+        ]
+      },
       "target" : {
         "containerPath" : "container:",
         "identifier" : "PokespeareTests",
@@ -28,5 +35,5 @@
       }
     }
   ],
-  "version" : 1
+  "version" : 2
 }
