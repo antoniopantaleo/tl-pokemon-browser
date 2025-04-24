@@ -23,17 +23,19 @@ public struct RemotePokemonSpriteLoader: PokemonSpriteLoader {
     public func getSprite(pokemonName name: String) async throws -> Data {
         let request = URLRequest(url: PokeAPI.pokemon(name: name).url)
         let detailResponse = try await client.perform(request: request)
-        guard detailResponse.statusCode == 200 else {
-            throw URLError(.badServerResponse)
-        }
+        try validateResponse(detailResponse)
         let remotePokemonDetail = try JSONDecoder().decode(RemotePokemonDetail.self, from: detailResponse.data)
         guard let spriteURL = remotePokemonDetail.sprites.front_default else {
             return Data()
         }
         let spriteResponse = try await client.perform(request: URLRequest(url: spriteURL))
-        guard detailResponse.statusCode == 200 else {
+        try validateResponse(spriteResponse)
+        return spriteResponse.data
+    }
+    
+    private func validateResponse(_ response: Response) throws {
+        guard response.statusCode == 200 else {
             throw URLError(.badServerResponse)
         }
-        return spriteResponse.data
     }
 }
