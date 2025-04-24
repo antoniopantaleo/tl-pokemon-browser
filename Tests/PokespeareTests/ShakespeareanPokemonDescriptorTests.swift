@@ -14,7 +14,7 @@ struct ShakespeareanPokemonDescriptorTests {
     
     struct HappyPath {
         @Test("getDescription returns a Shakespearean description")
-        func getsDescription() async throws {
+        func getDescription() async throws {
             // Given
             let client = HTTPClientStub {
                 Success {
