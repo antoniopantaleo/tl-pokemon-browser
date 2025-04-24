@@ -207,6 +207,122 @@ struct ShakespeareanPokemonDescriptorTests {
                 }
             )
         }
+        
+        @Test(
+            "getDescription throws error if Pokemon detail API returns with non 200 status code",
+            arguments: [
+                (500, anyData),
+                (404, anyData),
+                (500, Data()),
+                (404, Data()),
+                (
+                    500,
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: anyURL
+                    )
+                ),
+                (
+                    404,
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: anyURL
+                    )
+                )
+            ]
+        )
+        func pokemonDetailNon200StatusCode(statusCode: Int, data: Data) async throws {
+            // Given
+            let client = HTTPClientStub {
+                Success(statusCode: statusCode) { data }
+            }
+            let sut = ShakespeareanPokemonDescriptor(client: client)
+            // Then
+            await #expect(throws: URLError(.badServerResponse)) {
+                // When
+                _ = try await sut.getDescription(pokemonName: "pikachu")
+            }
+        }
+        
+        @Test(
+            "getDescription throws error if Pokemon species API returns with non 200 status code",
+            arguments: [
+                (500, anyData),
+                (404, anyData),
+                (500, Data()),
+                (404, Data()),
+                (
+                    500,
+                    try makePokemonSpeciesResponseData()
+                ),
+                (
+                    404,
+                    try makePokemonSpeciesResponseData()
+                )
+            ]
+        )
+        func pokemonSpeciesNon200StatusCode(statusCode: Int, data: Data) async throws {
+            // Given
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: anyURL
+                    )
+                }
+                Success(statusCode: statusCode) { data }
+            }
+            let sut = ShakespeareanPokemonDescriptor(client: client)
+            // Then
+            await #expect(throws: URLError(.badServerResponse)) {
+                // When
+                _ = try await sut.getDescription(pokemonName: "pikachu")
+            }
+        }
+        
+        @Test(
+            "getDescription throws error if FunTranslations API returns with non 200 status code",
+            arguments: [
+                (500, anyData),
+                (404, anyData),
+                (500, Data()),
+                (404, Data()),
+                (
+                    500,
+                    try makeRemoteTranslationResponseData(description: "a description")
+                ),
+                (
+                    404,
+                    try makeRemoteTranslationResponseData(description: "a description")
+                )
+            ]
+        )
+        func funTranslationsNon200StatusCode(statusCode: Int, data: Data) async throws {
+            // Given
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        spriteURL: anyURL
+                    )
+                }
+                Success {
+                    try makePokemonSpeciesResponseData()
+                }
+                Success(statusCode: statusCode) { data }
+            }
+            let sut = ShakespeareanPokemonDescriptor(client: client)
+            // Then
+            await #expect(throws: URLError(.badServerResponse)) {
+                // When
+                _ = try await sut.getDescription(pokemonName: "pikachu")
+            }
+        }
+        
     }
 }
 
