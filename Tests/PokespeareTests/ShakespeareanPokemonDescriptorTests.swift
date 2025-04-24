@@ -88,7 +88,24 @@ struct ShakespeareanPokemonDescriptorTests {
         }
     }
     
-    struct ErrorPath {}
+    struct ErrorPath {
+        @Test("getDescription throws error if Pokemon detail can't be decoded from succesful response")
+        func decodingError() async throws {
+            // Given
+            let client = HTTPClientStub {
+                Success { anyData }
+            }
+            let sut = ShakespeareanPokemonDescriptor(client: client)
+            // Then
+            await #expect(
+                throws: DecodingError.self,
+                performing: {
+                    // When
+                    _ = try await sut.getDescription(pokemonName: "pikachu")
+                }
+            )
+        }
+    }
 }
 
 private func makePokemonSpeciesResponseData(
