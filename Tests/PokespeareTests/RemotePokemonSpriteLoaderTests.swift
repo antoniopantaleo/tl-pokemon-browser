@@ -21,13 +21,16 @@ struct RemotePokemonSpriteLoaderTests {
                 stubs:
                     [
                         .success(
-                            try makePokemonDetailResponseData(
-                                id: 1,
-                                name: "pikachu",
-                                spriteURL: anyURL
+                            .success200(
+                                data:
+                                    try makePokemonDetailResponseData(
+                                        id: 1,
+                                        name: "pikachu",
+                                        spriteURL: anyURL
+                                    )
                             )
                         ),
-                        .success(anyData)
+                        .success(.success200(data: anyData))
                     ]
             )
             let sut = RemotePokemonSpriteLoader(client: client)
@@ -47,13 +50,16 @@ struct RemotePokemonSpriteLoaderTests {
                 stubs:
                     [
                         .success(
-                            try makePokemonDetailResponseData(
-                                id: 1,
-                                name: "pikachu",
-                                spriteURL: spriteURL
+                            .success200(
+                                data:
+                                    try makePokemonDetailResponseData(
+                                        id: 1,
+                                        name: "pikachu",
+                                        spriteURL: spriteURL
+                                    )
                             )
                         ),
-                        .success(anyData)
+                        .success(.success200(data: anyData))
                     ]
             )
             let sut = RemotePokemonSpriteLoader(client: client)
@@ -78,7 +84,7 @@ struct RemotePokemonSpriteLoaderTests {
         func decodingError() async throws {
             // Given
             let client = HTTPClientStub(
-                stubs: [ .success(anyData) ]
+                stubs: [ .success(.success200(data: anyData)) ]
             )
             let sut = RemotePokemonSpriteLoader(client: client)
             // Then
@@ -114,10 +120,13 @@ struct RemotePokemonSpriteLoaderTests {
             let client = HTTPClientStub(
                 stubs: [
                     .success(
-                        try makePokemonDetailResponseData(
-                            id: 1,
-                            name: "pikachu",
-                            spriteURL: anyURL
+                        .success200(
+                            data:
+                                try makePokemonDetailResponseData(
+                                    id: 1,
+                                    name: "pikachu",
+                                    spriteURL: anyURL
+                                )
                         )
                     ),
                     .failure(error)
@@ -140,10 +149,13 @@ struct RemotePokemonSpriteLoaderTests {
             let client = HTTPClientStub(
                 stubs: [
                     .success(
-                        try makePokemonDetailResponseData(
-                            id: 1,
-                            name: "pikachu",
-                            spriteURL: nil
+                        .success200(
+                            data:
+                                try makePokemonDetailResponseData(
+                                    id: 1,
+                                    name: "pikachu",
+                                    spriteURL: nil
+                                )
                         )
                     )
                 ]
@@ -176,15 +188,23 @@ private func makePokemonDetailResponseData(
 
 private final class HTTPClientStub: HTTPClient {
     
-    private var stubs: [Result<Data, Error>]
+    typealias Stub = Result<Response, Error>
+    
+    private var stubs: [Stub]
     private(set) var performedRequests: [URLRequest] = []
     
-    init(stubs: [Result<Data, Error>]) {
+    init(stubs: [Stub]) {
         self.stubs = stubs
     }
     
-    func perform(request: URLRequest) async throws -> Data {
+    func perform(request: URLRequest) async throws -> Response {
         performedRequests.append(request)
         return try stubs.removeFirst().get()
+    }
+}
+
+private extension Response {
+    static func success200(data: Data) -> Response {
+        Response(statusCode: 200, data: data)
     }
 }

@@ -8,5 +8,15 @@
 import Foundation
 
 public protocol HTTPClient {
-    func perform(request: URLRequest) async throws -> Data
+    func perform(request: URLRequest) async throws -> Response
+}
+
+public struct Response {
+    public let statusCode: Int
+    public let data: Data
+    
+    public init(statusCode: Int, data: Data) {
+        self.statusCode = statusCode
+        self.data = data
+    }
 }
