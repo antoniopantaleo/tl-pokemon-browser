@@ -1,7 +1,7 @@
 import Testing
 @testable import Pokespeare
 
-@Suite("PokeAPI")
+@Suite("PokeAPI", .tags(.api, .internal))
 struct PokeAPITests {
     
     @Test("/pokemon endpoint gets correctly constructed")

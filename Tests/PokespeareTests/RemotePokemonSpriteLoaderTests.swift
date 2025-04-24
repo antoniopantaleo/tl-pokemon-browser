@@ -9,7 +9,7 @@ import Foundation
 import Testing
 import Pokespeare
 
-@Suite("RemotePokemonSpriteLoaderTests")
+@Suite("RemotePokemonSpriteLoaderTests", .tags(.public))
 struct RemotePokemonSpriteLoaderTests {
     
     struct HappyPath {

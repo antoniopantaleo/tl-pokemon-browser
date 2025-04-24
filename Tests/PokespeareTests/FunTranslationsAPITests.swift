@@ -8,7 +8,7 @@
 import Testing
 @testable import Pokespeare
 
-@Suite("FunTranslationsAPI")
+@Suite("FunTranslationsAPI", .tags(.api, .internal))
 struct FunTranslationsAPITests {
     
     @Test("shakespeare endpoint gets correctly constructed")

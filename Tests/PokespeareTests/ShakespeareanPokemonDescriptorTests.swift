@@ -9,7 +9,7 @@ import Foundation
 import Testing
 @testable import Pokespeare
 
-@Suite("ShakespeareanPokemonDescriptorTests")
+@Suite("ShakespeareanPokemonDescriptorTests", .tags(.public))
 struct ShakespeareanPokemonDescriptorTests {
     
     struct HappyPath {
