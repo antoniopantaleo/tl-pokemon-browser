@@ -54,6 +54,22 @@ struct RemotePokemonSpriteLoaderTests {
         )
     }
     
+    @Test("getSprite throws error if HTTP request fails")
+    func failingHTTP() async throws {
+        // Given
+        let error = NSError(domain: "client", code: -1)
+        let client = HTTPClientStub(stubs: [.failure(error)])
+        let sut = RemotePokemonSpriteLoader(client: client)
+        // Then
+        await #expect(
+            throws: error,
+            performing: {
+                // When
+                _ = try await sut.getSprite(pokemonName: "pikachu")
+            }
+        )
+    }
+    
     //MARK: - Helpers
 
     private var anyURL: URL { URL(string: "https://example.com")! }
