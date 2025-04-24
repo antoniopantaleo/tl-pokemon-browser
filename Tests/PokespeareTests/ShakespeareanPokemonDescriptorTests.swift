@@ -44,6 +44,48 @@ struct ShakespeareanPokemonDescriptorTests {
             // Then
             #expect(description == "A shakesperian description")
         }
+        
+        @Test("getDescription performs 3 HTTP requests")
+        func threeHTTPRequests() async throws {
+            // Given
+            let client = HTTPClientStub {
+                Success {
+                    try makePokemonDetailResponseData(
+                        id: 1,
+                        name: "pikachu",
+                        speciesURL: URL(string: "https://species-url.com")!,
+                        spriteURL: anyURL
+                    )
+                }
+                
+                Success {
+                    try makePokemonSpeciesResponseData(
+                       description: "A description",
+                       language: "en"
+                   )
+                }
+                
+                Success {
+                    try makeRemoteTranslationResponseData(
+                        description: "A shakesperian description"
+                    )
+                }
+            }
+            let sut = ShakespeareanPokemonDescriptor(client: client)
+            // When
+            _ = try await sut.getDescription(pokemonName: "pikachu")
+            // Then
+            #expect(
+                client.performedRequests
+                    .compactMap(\.url)
+                    .map(\.absoluteString)
+                == [
+                    "https://pokeapi.co/api/v2/pokemon/pikachu",
+                    "https://species-url.com",
+                    "https://api.funtranslations.com/translate/shakespeare.json?text=A%20description"
+                ]
+            )
+        }
     }
     
     struct ErrorPath {}
