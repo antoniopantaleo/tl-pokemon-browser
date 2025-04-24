@@ -2,7 +2,7 @@ import Testing
 @testable import Pokespeare
 
 @Suite("PokeAPI")
-private struct Tests {
+struct PokeAPITests {
     
     @Test("/pokemon endpoint gets correctly constructed")
     func pokemonEndpoint() {
