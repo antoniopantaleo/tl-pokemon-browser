@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol HTTPClient {
+public protocol HTTPClient: AnyObject {
     func perform(request: URLRequest) async throws -> Response
 }
 
