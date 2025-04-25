@@ -13,7 +13,11 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Pokespeare"),
+            name: "Pokespeare",
+            resources: [
+                .process("Resources/Media.xcassets")
+            ]
+        ),
         .testTarget(
             name: "PokespeareTests",
             dependencies: ["Pokespeare"]
