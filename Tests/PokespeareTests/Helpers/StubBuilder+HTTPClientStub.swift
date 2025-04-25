@@ -44,7 +44,7 @@ extension StubBuilder where Stub == HTTPClientStub.Stub {
 }
 
 extension HTTPClientStub {
-    convenience init(@StubBuilder<Stub> _ stubBuilder: () -> [Stub]) {
+    init(@StubBuilder<Stub> _ stubBuilder: () -> [Stub]) {
         self.init(stubs: stubBuilder())
     }
 }

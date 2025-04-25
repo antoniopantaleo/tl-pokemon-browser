@@ -31,7 +31,7 @@ struct RemotePokemonSpriteLoaderTests {
             // When
             _ = try await sut.getSprite(pokemonName: "pikachu")
             // Then
-            #expect(
+            await #expect(
                 client.performedRequests.first?.url?.absoluteString == "https://pokeapi.co/api/v2/pokemon/pikachu"
             )
         }
@@ -54,7 +54,7 @@ struct RemotePokemonSpriteLoaderTests {
             // When
             _ = try await sut.getSprite(pokemonName: "pikachu")
             // Then
-            #expect(
+            await #expect(
                 client.performedRequests
                     .compactMap(\.url)
                     .map(\.absoluteString)

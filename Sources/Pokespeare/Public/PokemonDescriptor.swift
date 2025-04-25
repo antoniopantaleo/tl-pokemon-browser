@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol PokemonDescriptor {
+public protocol PokemonDescriptor: Sendable {
     func getDescription(pokemonName name: String) async throws -> String
 }
 

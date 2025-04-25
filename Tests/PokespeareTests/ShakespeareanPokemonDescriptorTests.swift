@@ -75,7 +75,7 @@ struct ShakespeareanPokemonDescriptorTests {
             // When
             _ = try await sut.getDescription(pokemonName: "pikachu")
             // Then
-            #expect(
+            await #expect(
                 client.performedRequests
                     .compactMap(\.url)
                     .map(\.absoluteString)
@@ -348,7 +348,7 @@ struct ShakespeareanPokemonDescriptorTests {
             // When
             _ = try await sut.getDescription(pokemonName: "pikachu")
             // Then
-            let translationRequestURL = try #require(
+            let translationRequestURL = try await #require(
                 client.performedRequests.last?.url
             )
             let components = URLComponents(

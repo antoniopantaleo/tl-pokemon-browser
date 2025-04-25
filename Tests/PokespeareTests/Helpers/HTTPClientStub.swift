@@ -8,8 +8,7 @@
 import Foundation
 import Pokespeare
 
-
-final class HTTPClientStub: HTTPClient {
+final actor HTTPClientStub: HTTPClient {
     
     typealias Stub = Result<Response, Error>
     

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol PokemonSpriteLoader {
+public protocol PokemonSpriteLoader: Sendable {
     func getSprite(pokemonName name: String) async throws -> Data
 }
 

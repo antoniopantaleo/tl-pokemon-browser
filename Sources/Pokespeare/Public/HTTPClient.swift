@@ -7,11 +7,11 @@
 
 import Foundation
 
-public protocol HTTPClient: AnyObject {
+public protocol HTTPClient: AnyObject, Sendable {
     func perform(request: URLRequest) async throws -> Response
 }
 
-public struct Response {
+public struct Response: Sendable {
     public let statusCode: Int
     public let data: Data
     
