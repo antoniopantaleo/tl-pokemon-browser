@@ -59,12 +59,12 @@ public struct PokemonView: View {
             }
         }
         .background(.ultraThinMaterial)
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: 10
-            )
-        )
-        .shadow(radius: 20, y: 10)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .background {
+            RoundedRectangle(cornerRadius: 10)
+            .foregroundStyle(.clear)
+            .shadow(radius: 20, y: 10)
+        }
     }
 }
 
