@@ -27,16 +27,15 @@ struct ContentView: View {
                     .ignoresSafeArea(.all, edges: .all)
                 VStack {
                     switch viewModel.state {
-                        case .idle where !isSearching:
+                        case _ where isSearching:
+                            EmptyView()
+                        case .idle:
                             ContentUnavailableView(
                                 "Search for a Pokemon",
                                 systemImage: "magnifyingglass",
                                 description: Text("Enter a Pokemon name to search")
                             )
-                        case let .found(
-                            description,
-                            spriteData
-                        ) where !isSearching:
+                        case let .found(description, spriteData):
                             if let uiImage = UIImage(data: spriteData) {
                                 PokemonView(
                                     sprite: Image(uiImage: uiImage),
