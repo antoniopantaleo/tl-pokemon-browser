@@ -84,6 +84,7 @@ struct ContentView: View {
                 .padding(20)
             }
             .animation(.bouncy.speed(0.8), value: viewModel.state)
+            .sensoryFeedback(.impact, trigger: spinningAnimation)
             .navigationTitle("Pokemon Browser")
             .searchable(
                 text: $viewModel.searchText,
