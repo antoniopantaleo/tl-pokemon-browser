@@ -208,23 +208,27 @@ struct ShakespeareanPokemonDescriptorTests {
             )
         }
         
+        @Test("getDescription throws NoPokemonFound if Pokemon Detail request returns 404 status code")
+        func notFound() async throws {
+            // Given
+            let client = HTTPClientStub {
+                Success(statusCode: 404) { anyData }
+            }
+            let sut = ShakespeareanPokemonDescriptor(client: client)
+            // Then
+            await #expect(throws: PokemonNotFound.self) {
+                // When
+                _ = try await sut.getDescription(pokemonName: "pikachu")
+            }
+        }
+        
         @Test(
             "getDescription throws error if Pokemon detail API returns with non 200 status code",
             arguments: [
                 (500, anyData),
-                (404, anyData),
                 (500, Data()),
-                (404, Data()),
                 (
                     500,
-                    try makePokemonDetailResponseData(
-                        id: 1,
-                        name: "pikachu",
-                        spriteURL: anyURL
-                    )
-                ),
-                (
-                    404,
                     try makePokemonDetailResponseData(
                         id: 1,
                         name: "pikachu",
@@ -250,15 +254,9 @@ struct ShakespeareanPokemonDescriptorTests {
             "getDescription throws error if Pokemon species API returns with non 200 status code",
             arguments: [
                 (500, anyData),
-                (404, anyData),
                 (500, Data()),
-                (404, Data()),
                 (
                     500,
-                    try makePokemonSpeciesResponseData()
-                ),
-                (
-                    404,
                     try makePokemonSpeciesResponseData()
                 )
             ]
@@ -287,17 +285,11 @@ struct ShakespeareanPokemonDescriptorTests {
             "getDescription throws error if FunTranslations API returns with non 200 status code",
             arguments: [
                 (500, anyData),
-                (404, anyData),
                 (500, Data()),
-                (404, Data()),
                 (
                     500,
                     try makeRemoteTranslationResponseData(description: "a description")
                 ),
-                (
-                    404,
-                    try makeRemoteTranslationResponseData(description: "a description")
-                )
             ]
         )
         func funTranslationsNon200StatusCode(statusCode: Int, data: Data) async throws {

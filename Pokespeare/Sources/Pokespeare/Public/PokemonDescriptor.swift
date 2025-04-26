@@ -69,8 +69,10 @@ public struct ShakespeareanPokemonDescriptor: PokemonDescriptor {
     }
     
     private func validateResponse(_ response: Response) throws {
-        guard response.statusCode == 200 else {
-            throw URLError(.badServerResponse)
+        switch response.statusCode {
+            case 404: throw PokemonNotFound()
+            case 200: return
+            default: throw URLError(.badServerResponse)
         }
     }
 }

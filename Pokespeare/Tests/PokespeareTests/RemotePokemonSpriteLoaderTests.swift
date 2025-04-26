@@ -103,6 +103,20 @@ struct RemotePokemonSpriteLoaderTests {
             )
         }
         
+        @Test("getSprite throws NoPokemonFound if Pokemon Detail request returns 404 status code")
+        func notFound() async throws {
+            // Given
+            let client = HTTPClientStub {
+                Success(statusCode: 404) { anyData }
+            }
+            let sut = RemotePokemonSpriteLoader(client: client)
+            // Then
+            await #expect(throws: PokemonNotFound.self) {
+                // When
+                _ = try await sut.getSprite(pokemonName: "pikachu")
+            }
+        }
+        
         @Test("getSprite throws error if sprite API request fails")
         func spriteAPIFails() async throws {
             // Given
@@ -151,19 +165,9 @@ struct RemotePokemonSpriteLoaderTests {
             "getSprite throws error if Pokemon detail API returns with non 200 status code",
             arguments: [
                 (500, anyData),
-                (404, anyData),
                 (500, Data()),
-                (404, Data()),
                 (
                     500,
-                    try makePokemonDetailResponseData(
-                        id: 1,
-                        name: "pikachu",
-                        spriteURL: anyURL
-                    )
-                ),
-                (
-                    404,
                     try makePokemonDetailResponseData(
                         id: 1,
                         name: "pikachu",
@@ -189,9 +193,7 @@ struct RemotePokemonSpriteLoaderTests {
             "getSprite throws error if sprite API returns with non 200 status code",
             arguments: [
                 (500, anyData),
-                (404, anyData),
                 (500, Data()),
-                (404, Data())
             ]
         )
         func spriteNon200StatusCode(statusCode: Int, data: Data) async throws {
