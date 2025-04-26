@@ -11,12 +11,18 @@ import Pokespeare
 @Observable
 final class ViewModel {
     
+    enum State: Equatable {
+        case idle
+        case loading
+        case notFound(searchedQuery: String)
+        case searchFailed(errorMessage: String)
+        case found(description: String, spriteData: Data)
+    }
+    
     var searchText: String = ""
     
-    private(set) var pokemonDescription: String?
-    private(set) var pokemonSprite: Data?
-    private(set) var isLoading = false
-    
+    private(set) var state: State = .idle
+    var isLoading: Bool { state == .loading }
     
     private let pokemonDescriptor: any PokemonDescriptor
     private let pokemonSpriteLoader: any PokemonSpriteLoader
@@ -30,20 +36,21 @@ final class ViewModel {
     }
     
     func search() {
-        isLoading = true
+        state = .loading
         Task { [weak self] in
-            defer { self?.isLoading = false }
+            defer { self?.searchText = "" }
             guard let self else { return }
             async let description = pokemonDescriptor.getDescription(pokemonName: searchText)
             async let sprite = pokemonSpriteLoader.getSprite(pokemonName: searchText)
             do {
-                pokemonDescription = try await description
-                pokemonSprite = try await sprite
-                searchText = ""
+                state = .found(
+                    description: try await description,
+                    spriteData: try await sprite
+                )
+            } catch where error is PokemonNotFound {
+                state = .notFound(searchedQuery: searchText)
             } catch {
-                // TODO: Handle errors
-                pokemonSprite = nil
-                pokemonDescription = nil
+                state = .searchFailed(errorMessage: error.localizedDescription)
             }
         }
     }

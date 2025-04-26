@@ -12,6 +12,8 @@ struct ContentView: View {
     
     @State private var viewModel: ViewModel
     @State private var isSearching = false
+    @State private var spinningAnimation = false
+    @Namespace private var card
     
     init(viewModel: ViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -24,34 +26,71 @@ struct ContentView: View {
                     .foregroundStyle(Color.yellow.opacity(0.7).gradient)
                     .ignoresSafeArea(.all, edges: .all)
                 VStack {
-                    if
-                        let description = viewModel.pokemonDescription,
-                        let imageData = viewModel.pokemonSprite,
-                        let uiImage = UIImage(data: imageData),
-                        !isSearching
-                    {
-                        PokemonView(
-                            sprite: Image(uiImage: uiImage),
-                            description: description
-                        )
-                        .padding()
-                    } else if !isSearching {
-                        ContentUnavailableView(
-                            "Search for a Pokemon",
-                            systemImage: "magnifyingglass",
-                            description: Text("Enter a Pokemon name to search")
-                        )
+                    switch viewModel.state {
+                        case .idle where !isSearching:
+                            ContentUnavailableView(
+                                "Search for a Pokemon",
+                                systemImage: "magnifyingglass",
+                                description: Text("Enter a Pokemon name to search")
+                            )
+                        case let .found(
+                            description,
+                            spriteData
+                        ) where !isSearching:
+                            if let uiImage = UIImage(data: spriteData) {
+                                PokemonView(
+                                    sprite: Image(uiImage: uiImage),
+                                    description: description
+                                )
+                                .rotation3DEffect(
+                                    .degrees(spinningAnimation ? 360 : 0),
+                                    axis: (x: 0, y: 1, z: 0)
+                                )
+                                .matchedGeometryEffect(
+                                    id: "card",
+                                    in: card,
+                                    properties: [.size, .frame, .position],
+                                    anchor: .center
+                                )
+                                .onTapGesture {
+                                    withAnimation(.bouncy.speed(0.5)) {
+                                        spinningAnimation.toggle()
+                                    }
+                                }
+                            }
+                        case .loading:
+                            PokemonView(
+                                sprite: Image(systemName: "photo"),
+                                description: "Lorem ipsum dolor sit amet."
+                            )
+                            .matchedGeometryEffect(
+                                id: "card",
+                                in: card,
+                                properties: [.size, .frame, .position],
+                                anchor: .center,
+                                isSource: true
+                            )
+                            .redacted(reason: .placeholder)
+                            .overlay { ProgressView() }
+                        case let .notFound(searchedQuery):
+                            ContentUnavailableView(
+                                "No pokemon named \(searchedQuery) can be found",
+                                systemImage: "exclamationmark.triangle.fill",
+                                description: Text("Try searching again")
+                            )
+                        default: EmptyView()
                     }
                 }
-                .padding()
+                .padding(20)
             }
-            .redacted(reason: viewModel.isLoading ? .placeholder : [])
+            .animation(.bouncy.speed(0.8), value: viewModel.state)
             .navigationTitle("Pokemon Browser")
             .searchable(
                 text: $viewModel.searchText,
                 isPresented: $isSearching,
-                prompt: "Search"
+                prompt: "Pikachu, Bulbasaur, Squirtle, ..."
             )
+            .disabled(viewModel.isLoading)
             .onSubmit(of: .search) {
                 viewModel.search()
                 isSearching = false
