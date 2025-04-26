@@ -10,15 +10,31 @@
 		A9C559852DBC1B0C00518B1B /* Pokespeare in Frameworks */ = {isa = PBXBuildFile; productRef = A9C559842DBC1B0C00518B1B /* Pokespeare */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A9C559B42DBD9A0000518B1B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A9C559662DBC1A8B00518B1B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A9C5596D2DBC1A8B00518B1B;
+			remoteInfo = "Pokemon Browser";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		A9C5596E2DBC1A8B00518B1B /* Pokemon Browser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pokemon Browser.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9C559822DBC1AE400518B1B /* Pokespeare */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Pokespeare; path = ../Pokespeare; sourceTree = SOURCE_ROOT; };
+		A9C559B02DBD9A0000518B1B /* Pokemon BrowserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pokemon BrowserTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A9C559702DBC1A8B00518B1B /* Pokemon Browser */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Pokemon Browser";
+			sourceTree = "<group>";
+		};
+		A9C559B12DBD9A0000518B1B /* Pokemon BrowserTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Pokemon BrowserTests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +48,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9C559AD2DBD9A0000518B1B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -40,6 +63,7 @@
 			children = (
 				A9C559822DBC1AE400518B1B /* Pokespeare */,
 				A9C559702DBC1A8B00518B1B /* Pokemon Browser */,
+				A9C559B12DBD9A0000518B1B /* Pokemon BrowserTests */,
 				A9C559832DBC1B0C00518B1B /* Frameworks */,
 				A9C5596F2DBC1A8B00518B1B /* Products */,
 			);
@@ -49,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				A9C5596E2DBC1A8B00518B1B /* Pokemon Browser.app */,
+				A9C559B02DBD9A0000518B1B /* Pokemon BrowserTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -86,6 +111,29 @@
 			productReference = A9C5596E2DBC1A8B00518B1B /* Pokemon Browser.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A9C559AF2DBD9A0000518B1B /* Pokemon BrowserTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9C559B62DBD9A0000518B1B /* Build configuration list for PBXNativeTarget "Pokemon BrowserTests" */;
+			buildPhases = (
+				A9C559AC2DBD9A0000518B1B /* Sources */,
+				A9C559AD2DBD9A0000518B1B /* Frameworks */,
+				A9C559AE2DBD9A0000518B1B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A9C559B52DBD9A0000518B1B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A9C559B12DBD9A0000518B1B /* Pokemon BrowserTests */,
+			);
+			name = "Pokemon BrowserTests";
+			packageProductDependencies = (
+			);
+			productName = "Pokemon BrowserTests";
+			productReference = A9C559B02DBD9A0000518B1B /* Pokemon BrowserTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -98,6 +146,10 @@
 				TargetAttributes = {
 					A9C5596D2DBC1A8B00518B1B = {
 						CreatedOnToolsVersion = 16.3;
+					};
+					A9C559AF2DBD9A0000518B1B = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = A9C5596D2DBC1A8B00518B1B;
 					};
 				};
 			};
@@ -116,12 +168,20 @@
 			projectRoot = "";
 			targets = (
 				A9C5596D2DBC1A8B00518B1B /* Pokemon Browser */,
+				A9C559AF2DBD9A0000518B1B /* Pokemon BrowserTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A9C5596C2DBC1A8B00518B1B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9C559AE2DBD9A0000518B1B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -138,7 +198,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9C559AC2DBD9A0000518B1B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A9C559B52DBD9A0000518B1B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A9C5596D2DBC1A8B00518B1B /* Pokemon Browser */;
+			targetProxy = A9C559B42DBD9A0000518B1B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A9C559772DBC1A8C00518B1B /* Debug */ = {
@@ -328,6 +403,52 @@
 			};
 			name = Release;
 		};
+		A9C559B72DBD9A0000518B1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GGSASZ9YEF;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.antoniopantaleo.TruelayerChallenge.Pokemon-BrowserTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pokemon Browser.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pokemon Browser";
+			};
+			name = Debug;
+		};
+		A9C559B82DBD9A0000518B1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GGSASZ9YEF;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.antoniopantaleo.TruelayerChallenge.Pokemon-BrowserTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pokemon Browser.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pokemon Browser";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -345,6 +466,15 @@
 			buildConfigurations = (
 				A9C5597A2DBC1A8C00518B1B /* Debug */,
 				A9C5597B2DBC1A8C00518B1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9C559B62DBD9A0000518B1B /* Build configuration list for PBXNativeTarget "Pokemon BrowserTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9C559B72DBD9A0000518B1B /* Debug */,
+				A9C559B82DBD9A0000518B1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
