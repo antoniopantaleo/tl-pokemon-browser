@@ -39,7 +39,7 @@ public struct PokemonView: View {
                 .aspectRatio(1, contentMode: .fit)
 
             Text(description)
-                .font(.title)
+                .font(.title3)
                 .fontWeight(.bold)
                 .padding()
         }
