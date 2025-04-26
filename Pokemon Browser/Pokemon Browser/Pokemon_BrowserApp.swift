@@ -6,12 +6,22 @@
 //
 
 import SwiftUI
+import Pokespeare
 
 @main
 struct Pokemon_BrowserApp: App {
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let httpClient = URLSessionHTTPClient(session: .shared)
+            let pokemonDescriptor = ShakespeareanPokemonDescriptor(client: httpClient)
+            let pokemonSpriteLoader = RemotePokemonSpriteLoader(client: httpClient)
+            ContentView(
+                viewModel: ViewModel(
+                    pokemonDescriptor: pokemonDescriptor,
+                    pokemonSpriteLoader: pokemonSpriteLoader
+                )
+            )
         }
     }
 }
