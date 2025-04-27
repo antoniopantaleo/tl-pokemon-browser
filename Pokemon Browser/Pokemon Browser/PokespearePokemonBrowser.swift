@@ -27,6 +27,12 @@ final class PokespearePokemonBrowser: PokemonBrowser {
     ) {
         async let description = pokemonDescriptor.getDescription(pokemonName: pokemonName)
         async let spriteData = pokemonSpriteLoader.getSprite(pokemonName: pokemonName)
-        return (try await description, try await spriteData)
+        do {
+            return (try await description, try await spriteData)
+        } catch where error is Pokespeare.PokemonNotFound {
+            throw PokemonBrowserError.pokemonNotFound
+        } catch {
+            throw error
+        }
     }
 }

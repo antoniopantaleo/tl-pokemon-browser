@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Pokespeare
 
 @Observable
 final class ViewModel {
@@ -41,8 +40,11 @@ final class ViewModel {
                     description: try await description,
                     spriteData: try await sprite
                 )
-            } catch where error is PokemonNotFound {
-                state = .notFound(searchedQuery: searchText)
+            } catch let error as PokemonBrowserError {
+                switch error {
+                    case .pokemonNotFound:
+                        state = .notFound(searchedQuery: searchText)
+                }
             } catch {
                 state = .searchFailed(errorMessage: error.localizedDescription)
             }

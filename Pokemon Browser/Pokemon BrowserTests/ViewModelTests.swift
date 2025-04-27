@@ -74,6 +74,21 @@ struct ViewModelTests {
         #expect(sut.state == .searchFailed(errorMessage: "An error message"))
     }
     
+    @Test("state is pokemon not found if browser throws PokemonNotFound error")
+    func pokemonNotFound() async {
+        // Given
+        let browser = PokemonBrowserStub()
+        let sut = ViewModel(browser: browser)
+        sut.searchText = "Pokemon that doesn't exist"
+        // When
+        sut.search()
+        await resumingContinuation(of: browser) { continuation in
+            continuation.resume(throwing: PokemonBrowserError.pokemonNotFound)
+        }
+        // Then
+        #expect(sut.state == .notFound(searchedQuery: "Pokemon that doesn't exist"))
+    }
+    
     //MARK: - Helpers
     
     private func resumingContinuation(
