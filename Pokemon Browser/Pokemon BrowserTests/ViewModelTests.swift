@@ -27,6 +27,22 @@ struct ViewModelTests {
         #expect(browser.searchedPokemonName == "Pikachu")
     }
     
+    @Test("search resets search text after search")
+    func resetSearchTextAfterSearch() async throws {
+        // Given
+        let browser = PokemonBrowserStub()
+        let sut = ViewModel(browser: browser)
+        sut.searchText = "Pikachu"
+        // When
+        #expect(sut.searchText == "Pikachu")
+        sut.search()
+        await resumingContinuation(of: browser) { continuation in
+            continuation.resume(returning: ("Description", Data()))
+        }
+        // Then
+        #expect(sut.searchText.isEmpty)
+    }
+    
     //MARK: - Helpers
     
     private func resumingContinuation(
