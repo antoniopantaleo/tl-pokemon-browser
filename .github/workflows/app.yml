@@ -19,7 +19,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: cd into project
-        run: "cd Pokemon\ Browser"
+        run: |
+          echo "Path >> $(ls)"
+          cd "Pokemon Browser"
       - name: Set Default Scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
