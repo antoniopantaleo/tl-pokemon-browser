@@ -59,6 +59,20 @@ struct ViewModelTests {
         #expect(sut.state == .found(description: "Description", spriteData: Data("sprite data".utf8)))
     }
     
+    @Test("state is search failed if browser throws error")
+    func searchFailed() async throws {
+        // Given
+        let browser = PokemonBrowserStub()
+        let sut = ViewModel(browser: browser)
+        // When
+        sut.search()
+        await resumingContinuation(of: browser) { continuation in
+            let error = ErrorStub("An error message")
+            continuation.resume(throwing: error)
+        }
+        // Then
+        #expect(sut.state == .searchFailed(errorMessage: "An error message"))
+    }
     
     //MARK: - Helpers
     
