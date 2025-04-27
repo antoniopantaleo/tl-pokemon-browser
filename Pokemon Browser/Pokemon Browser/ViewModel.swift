@@ -24,15 +24,10 @@ final class ViewModel {
     private(set) var state: State = .idle
     var isLoading: Bool { state == .loading }
     
-    private let pokemonDescriptor: any PokemonDescriptor
-    private let pokemonSpriteLoader: any PokemonSpriteLoader
+    private let browser: any PokemonBrowser
     
-    init(
-        pokemonDescriptor: any PokemonDescriptor,
-        pokemonSpriteLoader: any PokemonSpriteLoader
-    ) {
-        self.pokemonDescriptor = pokemonDescriptor
-        self.pokemonSpriteLoader = pokemonSpriteLoader
+    init(browser: any PokemonBrowser) {
+        self.browser = browser
     }
     
     func search() {
@@ -40,8 +35,7 @@ final class ViewModel {
         Task { [weak self] in
             defer { self?.searchText = "" }
             guard let self else { return }
-            async let description = pokemonDescriptor.getDescription(pokemonName: searchText)
-            async let sprite = pokemonSpriteLoader.getSprite(pokemonName: searchText)
+            async let (description, sprite) = browser.search(pokemonName: searchText)
             do {
                 state = .found(
                     description: try await description,

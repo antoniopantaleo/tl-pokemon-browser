@@ -103,8 +103,9 @@ struct ContentView: View {
 #Preview {
     ContentView(
         viewModel: ViewModel(
-            pokemonDescriptor: PreviewPokemonDescriptor(description: "A description of a Pokemon"),
-            pokemonSpriteLoader: PreviewPokemonSpriteLoader()
+            browser: PreviewPokemonBrowser(
+                description: "A description of a pokemon"
+            )
         )
     )
 }

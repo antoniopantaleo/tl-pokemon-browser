@@ -26,7 +26,7 @@ extension UIImage {
     }
 }
 
-struct PreviewPokemonDescriptor: PokemonDescriptor {
+struct PreviewPokemonBrowser: PokemonBrowser {
     
     private let description: String
     
@@ -34,16 +34,8 @@ struct PreviewPokemonDescriptor: PokemonDescriptor {
         self.description = description
     }
     
-    func getDescription(pokemonName name: String) async throws -> String {
-        return description
+    func search(pokemonName: String) async throws -> (description: String,spriteData: Data) {
+        (description, UIImage.from(color: .red).pngData()!)
     }
 }
-
-struct PreviewPokemonSpriteLoader: PokemonSpriteLoader {
-    
-    func getSprite(pokemonName name: String) async throws -> Data {
-        UIImage.from(color: .red).pngData()!
-    }
-}
-
 #endif
