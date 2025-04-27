@@ -43,6 +43,23 @@ struct ViewModelTests {
         #expect(sut.searchText.isEmpty)
     }
     
+    @Test("state changes from idle to loading to found")
+    func idleToLoadingToFound() async throws {
+        // Given
+        let browser = PokemonBrowserStub()
+        let sut = ViewModel(browser: browser)
+        // When
+        #expect(sut.state == .idle)
+        sut.search()
+        #expect(sut.state == .loading)
+        await resumingContinuation(of: browser) { continuation in
+            continuation.resume(returning: ("Description", Data("sprite data".utf8)))
+        }
+        // Then
+        #expect(sut.state == .found(description: "Description", spriteData: Data("sprite data".utf8)))
+    }
+    
+    
     //MARK: - Helpers
     
     private func resumingContinuation(
