@@ -13,7 +13,7 @@ import Foundation
 struct ViewModelTests {
 
     @Test("search does not alter the search text")
-    func doesNotAlterSearchText() async throws {
+    func doesNotAlterSearchText() async {
         // Given
         let browser = PokemonBrowserStub()
         let sut = ViewModel(browser: browser)
@@ -28,7 +28,7 @@ struct ViewModelTests {
     }
     
     @Test("search resets search text after search")
-    func resetSearchTextAfterSearch() async throws {
+    func resetSearchTextAfterSearch() async {
         // Given
         let browser = PokemonBrowserStub()
         let sut = ViewModel(browser: browser)
