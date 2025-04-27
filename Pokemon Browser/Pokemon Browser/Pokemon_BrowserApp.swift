@@ -11,6 +11,10 @@ import Pokespeare
 @main
 struct Pokemon_BrowserApp: App {
     
+    init() {
+        UISearchBar.appearance().tintColor = .label
+    }
+    
     var body: some Scene {
         WindowGroup {
             let httpClient = URLSessionHTTPClient(session: .shared)
