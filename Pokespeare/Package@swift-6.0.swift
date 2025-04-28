@@ -20,7 +20,10 @@ let package = Package(
         ),
         .testTarget(
             name: "PokespeareTests",
-            dependencies: ["Pokespeare"]
+            dependencies: ["Pokespeare"],
+            resources: [
+                .process("Pokespeare.xctestplan")
+            ]
         ),
     ]
 )
