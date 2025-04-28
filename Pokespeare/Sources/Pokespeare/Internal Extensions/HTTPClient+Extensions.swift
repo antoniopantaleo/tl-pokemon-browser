@@ -7,8 +7,6 @@
 
 import Foundation
 
-public struct PokemonNotFound: Error {}
-
 extension HTTPClient {
     typealias StatusCodeValidation =  @Sendable (Int) -> Error?
     
