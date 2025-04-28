@@ -23,7 +23,7 @@ struct ContentView: View {
         NavigationStack {
             ZStack {
                 Rectangle()
-                    .foregroundStyle(Color.yellow.opacity(0.7).gradient)
+                    .foregroundStyle(Color.red.opacity(0.7).gradient)
                     .ignoresSafeArea(.all, edges: .all)
                 VStack {
                     switch viewModel.state {
