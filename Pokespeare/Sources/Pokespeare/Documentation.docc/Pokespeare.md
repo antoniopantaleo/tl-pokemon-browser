@@ -31,7 +31,7 @@ The library is designed to be easy and fun to use (for example you can use ``Sha
 
 ### Displaying a Pokemon
 
-- <doc:PokemonView>
+- ``Pokespeare/PokemonView``
 
 ### Common Errors
 
