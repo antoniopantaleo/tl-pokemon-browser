@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-final class ViewModel: Sendable {
+final class ViewModel {
     
     enum State: Equatable {
         case idle
