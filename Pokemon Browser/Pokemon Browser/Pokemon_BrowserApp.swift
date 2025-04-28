@@ -20,11 +20,11 @@ struct Pokemon_BrowserApp: App {
             let httpClient = URLSessionHTTPClient(session: .shared)
             let pokemonDescriptor = ShakespeareanPokemonDescriptor(client: httpClient)
             let pokemonSpriteLoader = PokeAPISpriteLoader(client: httpClient)
-            
             let browser = PokespearePokemonBrowser(
                 pokemonDescriptor: pokemonDescriptor,
                 pokemonSpriteLoader: pokemonSpriteLoader
             )
+
             ContentView(
                 viewModel: ViewModel(browser: browser)
             )
