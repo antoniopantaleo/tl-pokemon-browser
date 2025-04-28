@@ -38,7 +38,7 @@ final class ViewModel {
         Task { [weak self] in
             guard let self else { return }
             async let (description, sprite) = browser.search(pokemonName: searchText)
-            var state: State
+            let state: State
             do {
                 state = .found(
                     description: try await description,
