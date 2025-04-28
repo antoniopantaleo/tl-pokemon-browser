@@ -22,18 +22,11 @@ public struct ShakespeareanPokemonDescriptor: PokemonDescriptor {
     }
     
     public func getDescription(pokemonName name: String) async throws -> String {
-        let remotePokemonDetail = try await getPokemonDetails(pokemonName: name)
+        let remotePokemonDetail = try await client.pokemonDetail(pokemonName: name)
         let englishDescription = try await getPokemonSpeciesEnglishDescription(
             speciesURL: remotePokemonDetail.species.url
         )
         return try await getShakespeareanTranslation(of: englishDescription)
-    }
-    
-    private func getPokemonDetails(pokemonName name: String) async throws -> RemotePokemonDetail {
-        let detailRequest = URLRequest(url: PokeAPI.pokemon(name: name).url)
-        let detailResponse = try await client.perform(request: detailRequest)
-        try validateResponse(detailResponse)
-        return try JSONDecoder().decode(RemotePokemonDetail.self, from: detailResponse.data)
     }
     
     private func getPokemonSpeciesEnglishDescription(speciesURL: URL) async throws -> String  {
@@ -69,10 +62,8 @@ public struct ShakespeareanPokemonDescriptor: PokemonDescriptor {
     }
     
     private func validateResponse(_ response: Response) throws {
-        switch response.statusCode {
-            case 404: throw PokemonNotFound()
-            case 200: return
-            default: throw URLError(.badServerResponse)
+        guard response.statusCode == 200 else {
+            throw URLError(.badServerResponse)
         }
     }
 }
