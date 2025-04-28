@@ -1,5 +1,5 @@
 //
-//  RemotePokemonDetail.swift
+//  PokeAPIPokemonDetail.swift
 //  Pokespeare
 //
 //  Created by Antonio on 23/04/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RemotePokemonDetail: Decodable {
+struct PokeAPIPokemonDetail: Decodable {
     struct Sprites: Decodable {
         let front_default: URL?
     }

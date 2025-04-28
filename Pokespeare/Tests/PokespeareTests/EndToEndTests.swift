@@ -21,7 +21,7 @@ struct EndToEndTests {
                 configuration: configuration
             )
         )
-        let sut = RemotePokemonSpriteLoader(client: client)
+        let sut = PokeAPISpriteLoader(client: client)
         // When
         let spriteData = try await sut.getSprite(pokemonName: "bulbasaur")
         // Then

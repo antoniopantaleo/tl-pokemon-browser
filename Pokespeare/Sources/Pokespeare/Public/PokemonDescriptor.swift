@@ -48,7 +48,7 @@ public struct ShakespeareanPokemonDescriptor: PokemonDescriptor {
         let speciesRequest = URLRequest(url: speciesURL)
         let speciesResponseData = try await client.dataValidatingResponse(for: speciesRequest)
         let pokemonSpecies = try JSONDecoder().decode(
-            RemotePokemonSpecies.self,
+            PokeAPIPokemonSpecies.self,
             from: speciesResponseData
         )
         guard let description = pokemonSpecies.flavor_text_entries

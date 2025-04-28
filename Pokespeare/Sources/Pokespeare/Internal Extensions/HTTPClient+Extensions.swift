@@ -22,7 +22,7 @@ extension HTTPClient {
         
     }
     
-    func pokemonDetail(pokemonName name: String) async throws -> RemotePokemonDetail {
+    func pokemonDetail(pokemonName name: String) async throws -> PokeAPIPokemonDetail {
         let detailRequest = URLRequest(url: PokeAPI.pokemon(name: name).url)
         let detailResponseData = try await dataValidatingResponse(
             for: detailRequest,
@@ -34,6 +34,6 @@ extension HTTPClient {
                 }
             }
         )
-        return try JSONDecoder().decode(RemotePokemonDetail.self, from: detailResponseData)
+        return try JSONDecoder().decode(PokeAPIPokemonDetail.self, from: detailResponseData)
     }
 }

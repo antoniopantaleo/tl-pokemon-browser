@@ -1,5 +1,5 @@
 //
-//  RemotePokemonSpecies.swift
+//  PokeAPIPokemonSpecies.swift
 //  Pokespeare
 //
 //  Created by Antonio on 24/04/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RemotePokemonSpecies: Decodable {
+struct PokeAPIPokemonSpecies: Decodable {
     struct FlavorTextEntry: Decodable {
         struct Language: Decodable {
             let name: String

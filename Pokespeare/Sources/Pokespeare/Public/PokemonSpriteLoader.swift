@@ -18,12 +18,12 @@ public protocol PokemonSpriteLoader: Sendable {
     func getSprite(pokemonName name: String) async throws -> Data
 }
 
-/// Description
-public struct RemotePokemonSpriteLoader: PokemonSpriteLoader {
+/// A ``PokemonSpriteLoader`` implementation that downloads sprite data from PokeAPI
+public struct PokeAPISpriteLoader: PokemonSpriteLoader {
     
     private let client: HTTPClient
     
-    /// Use this method to create a new instance of ``RemotePokemonSpriteLoader`` with a given ``HTTPClient``.
+    /// Use this method to create a new instance of ``PokeAPISpriteLoader`` with a given ``HTTPClient``.
     ///
     /// ``HTTPClient`` is required since it is used to perform network requests to download Pokémon data.
     /// - Parameter client: The ``HTTPClient`` instance used for network requests.

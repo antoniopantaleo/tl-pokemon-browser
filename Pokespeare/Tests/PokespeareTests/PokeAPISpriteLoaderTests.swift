@@ -1,5 +1,5 @@
 //
-//  RemotePokemonSpriteLoaderTests.swift
+//  PokeAPISpriteLoaderTests.swift
 //  Pokespeare
 //
 //  Created by Antonio on 23/04/25.
@@ -9,8 +9,8 @@ import Foundation
 import Testing
 import Pokespeare
 
-@Suite("RemotePokemonSpriteLoaderTests", .tags(.public))
-struct RemotePokemonSpriteLoaderTests {
+@Suite("PokeAPISpriteLoaderTests", .tags(.public))
+struct PokeAPISpriteLoaderTests {
     
     struct HappyPath {
 
@@ -27,7 +27,7 @@ struct RemotePokemonSpriteLoaderTests {
                 }
                 Success { anyData }
             }
-            let sut = RemotePokemonSpriteLoader(client: client)
+            let sut = PokeAPISpriteLoader(client: client)
             // When
             _ = try await sut.getSprite(pokemonName: "pikachu")
             // Then
@@ -50,7 +50,7 @@ struct RemotePokemonSpriteLoaderTests {
                 }
                 Success { anyData }
             }
-            let sut = RemotePokemonSpriteLoader(client: client)
+            let sut = PokeAPISpriteLoader(client: client)
             // When
             _ = try await sut.getSprite(pokemonName: "pikachu")
             // Then
@@ -74,7 +74,7 @@ struct RemotePokemonSpriteLoaderTests {
             let client = HTTPClientStub {
                 Success { anyData }
             }
-            let sut = RemotePokemonSpriteLoader(client: client)
+            let sut = PokeAPISpriteLoader(client: client)
             // Then
             await #expect(
                 throws: DecodingError.self,
@@ -92,7 +92,7 @@ struct RemotePokemonSpriteLoaderTests {
             let client = HTTPClientStub {
                 Failure(error: error)
             }
-            let sut = RemotePokemonSpriteLoader(client: client)
+            let sut = PokeAPISpriteLoader(client: client)
             // Then
             await #expect(
                 throws: error,
@@ -109,7 +109,7 @@ struct RemotePokemonSpriteLoaderTests {
             let client = HTTPClientStub {
                 Success(statusCode: 404) { anyData }
             }
-            let sut = RemotePokemonSpriteLoader(client: client)
+            let sut = PokeAPISpriteLoader(client: client)
             // Then
             await #expect(throws: PokemonNotFound.self) {
                 // When
@@ -131,7 +131,7 @@ struct RemotePokemonSpriteLoaderTests {
                 }
                 Failure(error: error)
             }
-            let sut = RemotePokemonSpriteLoader(client: client)
+            let sut = PokeAPISpriteLoader(client: client)
             // Then
             await #expect(
                 throws: error,
@@ -154,7 +154,7 @@ struct RemotePokemonSpriteLoaderTests {
                     )
                 }
             }
-            let sut = RemotePokemonSpriteLoader(client: client)
+            let sut = PokeAPISpriteLoader(client: client)
             // When
             let spriteData = try await sut.getSprite(pokemonName: "pikachu")
             // Then
@@ -181,7 +181,7 @@ struct RemotePokemonSpriteLoaderTests {
             let client = HTTPClientStub {
                 Success(statusCode: statusCode) { data }
             }
-            let sut = RemotePokemonSpriteLoader(client: client)
+            let sut = PokeAPISpriteLoader(client: client)
             // Then
             await #expect(throws: URLError(.badServerResponse)) {
                 // When
@@ -208,7 +208,7 @@ struct RemotePokemonSpriteLoaderTests {
                 }
                 Success(statusCode: statusCode)  { data }
             }
-            let sut = RemotePokemonSpriteLoader(client: client)
+            let sut = PokeAPISpriteLoader(client: client)
             // Then
             await #expect(throws: URLError(.badServerResponse)) {
                 // When

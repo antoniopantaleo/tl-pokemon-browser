@@ -19,7 +19,7 @@ struct Pokemon_BrowserApp: App {
         WindowGroup {
             let httpClient = URLSessionHTTPClient(session: .shared)
             let pokemonDescriptor = ShakespeareanPokemonDescriptor(client: httpClient)
-            let pokemonSpriteLoader = RemotePokemonSpriteLoader(client: httpClient)
+            let pokemonSpriteLoader = PokeAPISpriteLoader(client: httpClient)
             
             let browser = PokespearePokemonBrowser(
                 pokemonDescriptor: pokemonDescriptor,
