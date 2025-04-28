@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var viewModel: ViewModel
     @State private var isSearching = false
     @State private var spinningAnimation = false
+    @State private var isShowingErrorAlert = false
     @Namespace private var card
     
     init(viewModel: ViewModel) {
@@ -95,6 +96,19 @@ struct ContentView: View {
                 viewModel.search()
                 isSearching = false
             }
+            .onChange(of: viewModel.state) { _, newValue in
+                guard case .searchFailed = newValue else { return }
+                isShowingErrorAlert = true
+            }
+            .alert(
+                "Error",
+                isPresented: $isShowingErrorAlert,
+                presenting: viewModel.errorMessage,
+                actions: { _ in
+                    Button("Ok") { }
+                },
+                message: { Text($0) }
+            )
         }
     }
 }

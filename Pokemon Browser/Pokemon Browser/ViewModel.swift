@@ -22,6 +22,10 @@ final class ViewModel {
     
     private(set) var state: State = .idle
     var isLoading: Bool { state == .loading }
+    var errorMessage: String? {
+        guard case let .searchFailed(errorMessage) = state else { return nil }
+        return errorMessage
+    }
     
     private let browser: any PokemonBrowser
     
