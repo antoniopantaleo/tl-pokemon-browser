@@ -31,11 +31,10 @@ public struct ShakespeareanPokemonDescriptor: PokemonDescriptor {
     
     private func getPokemonSpeciesEnglishDescription(speciesURL: URL) async throws -> String  {
         let speciesRequest = URLRequest(url: speciesURL)
-        let speciesResponse = try await client.perform(request: speciesRequest)
-        try validateResponse(speciesResponse)
+        let speciesResponseData = try await client.dataValidatingResponse(for: speciesRequest)
         let pokemonSpecies = try JSONDecoder().decode(
             RemotePokemonSpecies.self,
-            from: speciesResponse.data
+            from: speciesResponseData
         )
         guard let description = pokemonSpecies.flavor_text_entries
             .first(where: { $0.language.name == "en" })?
@@ -52,18 +51,12 @@ public struct ShakespeareanPokemonDescriptor: PokemonDescriptor {
         let translationRequest = URLRequest(url: FunTranslationsAPI.shakespeare(
             text: description).url
         )
-        let translationResponse = try await client.perform(request: translationRequest)
-        try validateResponse(translationResponse)
+        let translationResponseData = try await client.dataValidatingResponse(for: translationRequest)
         let translation = try JSONDecoder().decode(
             RemoteTranslationResponse.self,
-            from: translationResponse.data
+            from: translationResponseData
         )
         return translation.contents.translated
     }
-    
-    private func validateResponse(_ response: Response) throws {
-        guard response.statusCode == 200 else {
-            throw URLError(.badServerResponse)
-        }
-    }
+
 }
