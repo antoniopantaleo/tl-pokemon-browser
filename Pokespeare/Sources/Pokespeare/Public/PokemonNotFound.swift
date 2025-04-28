@@ -7,4 +7,5 @@
 
 import Foundation
 
+/// An error type representing a situation where a Pokémon is not found.
 public struct PokemonNotFound: Error {}

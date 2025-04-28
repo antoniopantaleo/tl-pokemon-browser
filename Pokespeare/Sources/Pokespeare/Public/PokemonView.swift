@@ -7,11 +7,16 @@
 
 import SwiftUI
 
+/// A view that displays a card-style like Pokémon sprite and its description.
 public struct PokemonView: View {
     
     private let sprite: Image
     private let description: String
     
+    /// Use this method to create a new instance of ``PokemonView`` with a given sprite and description.
+    /// - Parameters:
+    ///   - sprite: The Pokémon sprite to display.
+    ///   - description: The description of the Pokémon.
     public init(sprite: Image, description: String) {
         self.sprite = sprite
         self.description = description
