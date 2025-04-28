@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-final class ViewModel {
+final class ViewModel: Sendable {
     
     enum State: Equatable {
         case idle
@@ -36,9 +36,9 @@ final class ViewModel {
     func search() {
         state = .loading
         Task { [weak self] in
-            defer { self?.searchText = "" }
             guard let self else { return }
             async let (description, sprite) = browser.search(pokemonName: searchText)
+            var state: State
             do {
                 state = .found(
                     description: try await description,
@@ -51,6 +51,10 @@ final class ViewModel {
                 }
             } catch {
                 state = .searchFailed(errorMessage: error.localizedDescription)
+            }
+            await MainActor.run { [weak self, state] in
+                self?.state = state
+                self?.searchText = ""
             }
         }
     }
