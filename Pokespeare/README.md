@@ -22,18 +22,19 @@ The minimum iOS requirement is set to iOS 16.0, and the minimum macOS requiremen
 `Pokespeare` has been built as a Swift Package. Clients can integrate the SDK as a local package by simply dragging and dropping it into their XCode projects, and adding the dependency to their desired target by going into the *General* tab from project settings, then scrolling down to the *Frameworks, Libraries and Embedded Content* section (this is the approach I followed in the [Pokemon Browser](https://github.com/antoniopantaleo/tl-pokemon-browser/tree/develop/Pokemon%20Browser) demo project).
 
 The SDK has built-in components to perform main tasks such as [retrieving Pokemon descriptions](https://github.com/antoniopantaleo/tl-pokemon-browser/blob/develop/Pokespeare/Sources/Pokespeare/Public/PokemonDescriptor.swift), [retrieving Pokemon sprites](https://github.com/antoniopantaleo/tl-pokemon-browser/blob/develop/Pokespeare/Sources/Pokespeare/Public/PokemonSpriteLoader.swift), and [displaying Pokemon images](https://github.com/antoniopantaleo/tl-pokemon-browser/blob/develop/Pokespeare/Sources/Pokespeare/Public/PokemonView.swift) using SwiftUI, but it can be easily extended through exposed protocols and `View` manipulation.
+To perform network requests, clients have to implement their `HTTPClient` or use the default `URLSessionHTTPClient`. With this, they can instantiate a `ShakespeareanPokemonDescriptor` to get the description of a given Pokemon name, and a `PokeAPIPokemnoSpriteLoader` to load a sprite data.
+Clients can then use `PokemonView` to draw a pokemon card-like image using SwiftUI.
 
 ## Brief description of the SDK architecture
 
 ### Services
 
-Both description and sprite services are defined as protocols. This gives clients the ability to create their own implementations (e.g. use different APIs to retrieve sprite data, or read Pokemon descriptions from a DB), in addition to giving them the possibility to create stubs for their tests, without depending on concrete implementations.
+Both description and sprite services are defined as protocols. This gives clients the flexibility to not depend on concrete implementations.
 A similar approach was used within the SDK with the `HTTPClient` protocol:
 
 ### Network μlayer
 
-The default services implementations download information from different APIs, so they need some sort of network capability. An abstraction layer over the HTTP request mechanism was used, so that default services implementation doesn't have to depend on concrete networking technology (e.g. Alamofire, URLSession, or more).
-
+The default services implementations download information from different APIs, so they need some sort of network capability. An abstraction layer over the HTTP request mechanism was used, so that default services implementation doesn't have to depend on concrete networking technology (e.g. Alamofire, URLSession, or other).
 When testing the built-in URLSessionHTTPClient, a custom URLProtocol type was used, to mock real HTTP requests and perform tests without hitting the network.
 
 ### UI Component
